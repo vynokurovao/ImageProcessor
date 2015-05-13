@@ -18,10 +18,10 @@ public class ImageProcessor {
             for (int j = 0; j < image.getWidth(); j++) {
                 int rgb = image.getRGB(j, i);
 
-                int alpha = (rgb >> 24) & 255;
-                int red = (rgb >> 16) & 255;
-                int green = (rgb >> 8) & 255;
-                int blue = rgb & 255;
+                int alpha = (rgb >> 24) & 0xff;
+                int red = (rgb >> 16) & 0xff;
+                int green = (rgb >> 8) & 0xff;
+                int blue = rgb & 0xff;
 
                 int newRgb = (int)(0.2126 * red + 0.7152 * green + 0.0722 * blue);
 
@@ -38,17 +38,22 @@ public class ImageProcessor {
     }
 
     public static void main(String[] args) {
+
+        if (args.length < 2){
+            System.out.println("Not enough data received");
+        }
+
         BufferedImage img = null;
+
         try {
-            img = ImageIO.read(new File("/home/oksana/workspace/ImageProcessor/im.jpg"));
+            img = ImageIO.read(new File(args[0]));
         } catch (IOException e) {
         }
 
         toGrayscale(img);
 
         try {
-            File f = new File("/home/oksana/workspace/ImageProcessor/im1.jpg");
-            ImageIO.write(img, "jpg", f);
+            ImageIO.write(img, "jpg", new File(args[1]));
         } catch (IOException e) {
         }
     }
